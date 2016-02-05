@@ -1,0 +1,37 @@
+JAVA Ninja Framework
+
+The basics of how to setup Ninja Framework in Netbeans can be learnt from this URL:
+https://bruceoutdoors.wordpress.com/2015/04/19/ninja-framework-tutorial-part-1-setting-up-ninja-with-netbeans/
+
+It is a 3 part tutorial that teaches how to setup Ninja Framework for web development in JAVA.
+
+The following modifications are needed to usse the framework with Oracle.
+
+1. Copy the persistence-unit for postgresql and edit it for oracle. Replace the driver to the oracle driver: oracle.jdbc.driver.OracleDriver
+and replace the dialect to org.hibernate.dialect.Oracle10gDialect or above.
+
+2. Install ojdbc6 to the local maven repository: http://www.mkyong.com/maven/how-to-add-oracle-jdbc-driver-in-your-maven-local-repository/
+	i. Download ojdbc6
+	ii. run mvn install:install-file -Dfile={Path/to/your/ojdbc.jar} -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0 -Dpackaging=jar
+	iii. add ojdbc6 to the POM.xml
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+			<version>11.2.0</version>
+		</dependency>
+		
+3. Create all the tables in v1_sql in the dao.migration folder. Replace the table User to Users (or something else)
+
+4. Go to the code and refactor User to Users (or the name changed to above)
+
+5. Create a SEQUENCE in Oracle for the models: eg. CREATE SEQUENCE LIENUPLOAD_ARTICLE_SEQ START WITH 1 MAXVALUE 999999999999999999999999999 MINVALUE 1 NOCYCLE CACHE 20 NOORDER;
+
+4. Edit the Article and User models adding the following to the @id:
+	@SequenceGenerator(name="LIENUPLOAD_ARTICLE_SEQ", sequenceName="LIENUPLOAD_ARTICLE_SEQ", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="LIENUPLOAD_ARTICLE_SEQ")
+	
+The four steps above will properly set up Ninja Framework JPA for use with Oracle database.
+
+To handle file upload, @FileProvider(MemoryFileItemProvider.class) or the other one (see the documentation) must be added to the top of the method.
+
+To add a new library to a maven project, just get the dependency xml from the maven repository site.
