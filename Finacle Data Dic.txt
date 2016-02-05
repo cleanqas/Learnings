@@ -1,0 +1,5 @@
+How to get the data defination in Finacle.
+
+1. Get the Finacle 10 Data Dictionary (or dictionary for whatever version to use)
+2. Run the query select * from all_synonyms where synonym_name = '<<table accronym e.g EAB, GAM>>' to get the real name of the table
+3. Copy the real name under the table name column and search for it in the data dictionary.
